@@ -3,49 +3,460 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pokémon API</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="css/style.css">
+    <!-- <link rel="shortcut icon" href="favicon.ico" type="image/x-icon"> -->
+    <title>Poke-Dex</title>
 </head>
 <body>
-    <h1>Welcome to the Pokémon API</h1>
-    <div>
-        <input type="text" id="pokemon-input" placeholder="Enter Pokémon name">
-        <button id="fetch-button">Fetch Pokémon</button>
-    </div>
-    <div>
-        <label for="type-select">Select Pokémon Type:</label>
-        <select id="type-select">
-            <option value="">--Select Type--</option>
-            <option value="fire">Fire</option>
-            <option value="water">Water</option>
-            <option value="grass">Grass</option>
-            <!-- Add more types as needed -->
-        </select>
-        <button id="fetch-type-button">Fetch by Type</button>
-    </div>
-    <div>
-        <label for="ability-select">Filter by Ability:</label>
-        <select id="ability-select">
-            <option value="">--Select Ability--</option>
-            <!-- Add abilities dynamically -->
-        </select>
-        <button id="filter-button">Filter Pokémon</button>
-    </div>
-    <div>
-        <label for="sort-select">Sort by:</label>
-        <select id="sort-select">
-            <option value="name">Name</option>
-            <option value="height">Height</option>
-            <option value="weight">Weight</option>
-        </select>
-        <button id="sort-button">Sort Pokémon</button>
-    </div>
-    <div id="pokemon-data"></div>
-    <div id="favorites"></div>
-    <div id="search-history"></div>
-    <button id="dark-mode-toggle">Toggle Dark Mode</button>
-    <button id="fetch-all-button">Fetch All Pokémon</button>
-    <div id="all-pokemon-images"></div>
+    <header>
+	
+        <nav class="nav">
+            <img src="./images/pokedex.jpg" alt="" id="logo">
+            <ul class="nav-list">
+                <li class="nav-item"><button class="btn btn-header return" id="return">Return</button></li>
+                <li class="nav-item"><button class="btn btn-header normal" id="normal">Normal</button></li>
+                <li class="nav-item"><button class="btn btn-header fire" id="fire">Fire</button></li>
+                <li class="nav-item"><button class="btn btn-header water" id="water">Water</button></li>
+                <li class="nav-item"><button class="btn btn-header grass" id="grass">Grass</button></li>
+                <li class="nav-item"><button class="btn btn-header flying" id="flying">Flying</button></li>
+                <li class="nav-item"><button class="btn btn-header poison" id="poison">Poison</button></li>
+                <li class="nav-item"><button class="btn btn-header bug" id="bug">Bug</button></li>
+                <li class="nav-item"><button class="btn btn-header electric" id="electric">Electric</button></li>
+                <li class="nav-item"><button class="btn btn-header ground" id="ground">Ground</button></li>
+                <li class="nav-item"><button class="btn btn-header fairy" id="fairy">Fairy</button></li>
+                <li class="nav-item"><button class="btn btn-header fighting" id="fighting">Fighting</button></li>
+                <li class="nav-item"><button class="btn btn-header psychic" id="psychic">Psychic</button></li>
+                <li class="nav-item"><button class="btn btn-header rock" id="rock">Rock</button></li>
+                <li class="nav-item"><button class="btn btn-header ghost" id="ghost">Ghost</button></li>
+                <li class="nav-item"><button class="btn btn-header ice" id="ice">Ice</button></li>
+                <li class="nav-item"><button class="btn btn-header dragon" id="dragon">Dragon</button></li>
+                <li class="nav-item"><button class="btn btn-header steel" id="steel">Steel</button></li>
+                <li class="nav-item"><button class="btn btn-header dark" id="dark">Dark</button></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div id="all"></div>
+            <div class="pokemon-all" id="list-Pokemon">
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#001</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png" alt="Bulbasaur">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">001</p>
+                            <h1 class="pokemon-name">Bulbasaur</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type grass ">grass</p>
+                            <p class="type poison">poison</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#002</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/2.png" alt="Ivysaur">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">002</p>
+                            <h1 class="pokemon-name">Ivysaur</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type grass ">grass</p>
+                            <p class="type poison">poison</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#003</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/3.png" alt="Venusaur">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">003</p>
+                            <h1 class="pokemon-name">Venusaur</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type grass ">grass</p>
+                            <p class="type poison">poison</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">6`07"</p>
+                            <p class="weight">220.5Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#004</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/4.png" alt="Charmander">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">004</p>
+                            <h1 class="pokemon-name">Charmander</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type fire ">fire</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">2`00"</p>
+                            <p class="weight">18.7</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#005</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/5.png" alt="Charmeleon">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">005</p>
+                            <h1 class="pokemon-name">Charmeleon</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type fire">fire</p>
+                        
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">3`07"</p>
+                            <p class="weight">41.9Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#006</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/6.png" alt="Charizard">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">006</p>
+                            <h1 class="pokemon-name">Charizard</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type fire ">fire</p>
+                            <p class="type flying">flying</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">5`07"</p>
+                            <p class="weight">199.5Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#007</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/7.png" alt="Squirtle">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">007</p>
+                            <h1 class="pokemon-name">Squirtle</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type water ">water</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">1`08"</p>
+                            <p class="weight">19.8Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#008</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/8.png" alt="Wartortle">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">008</p>
+                            <h1 class="pokemon-name">Wartortle</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type water ">water</p>
+                          
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">3`03"</p>
+                            <p class="weight">49.6Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#009</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/9.png" alt="Blastoise">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">009</p>
+                            <h1 class="pokemon-name">Blastoise</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type water ">water</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">5`03"</p>
+                            <p class="weight">188.5Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#010</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/10.png" alt="Caterpie">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">004</p>
+                            <h1 class="pokemon-name">Caterpie</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type bug ">bug</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">1`00"</p>
+                            <p class="weight">6.4Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#011</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/11.png" alt="Metapod">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">011</p>
+                            <h1 class="pokemon-name">Metapod</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type bug ">bug</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">2`04"</p>
+                            <p class="weight">21.8Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#012</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/12.png" alt="Butterfree">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">012</p>
+                            <h1 class="pokemon-name">Butterfree</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type bug ">bug</p>
+                            <p class="type flying">flying</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">3`07"</p>
+                            <p class="weight">70.5Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#013</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/13.png" alt="Weedle">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">013</p>
+                            <h1 class="pokemon-name">Weedle</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type bug ">bug</p>
+                            <p class="type poison">poison</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">1`00"</p>
+                            <p class="weight">7.1Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#014</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/14.png" alt="Kakuna">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">014</p>
+                            <h1 class="pokemon-name">Kakuna</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type bug ">bug</p>
+                            <p class="type poison">poison</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">2`00"</p>
+                            <p class="weight">22.Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#015</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/15.png" alt="Beedrill">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">015</p>
+                            <h1 class="pokemon-name">Beedrill</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type bug ">bug</p>
+                            <p class="type poison">poison</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">3`03"</p>
+                            <p class="weight">65.0Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#016</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/16.png" alt="Pidgey">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">016</p>
+                            <h1 class="pokemon-name">Pidgey</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type normal ">normal</p>
+                            <p class="type flying">flying</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">1`00"</p>
+                            <p class="weight">4.0Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#017</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/17.png" alt="Pidgeotto">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">017</p>
+                            <h1 class="pokemon-name">Pidgeotto</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type normal ">normal</p>
+                            <p class="type flying">flying</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">3`07"</p>
+                            <p class="weight">66.1Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#018</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/18.png" alt="Pidgeot">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">018</p>
+                            <h1 class="pokemon-name">Pidgeot</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type normal ">normal</p>
+                            <p class="type flying">flying</p>
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">4`11"</p>
+                            <p class="weight">87.1Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#019</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/19.png" alt="Rattata">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">019</p>
+                            <h1 class="pokemon-name">Rattata</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type normal ">normal</p>
+                            
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">1`00"</p>
+                            <p class="weight">7.7Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                    </div>
+                </div>
+                <div class="pokemon">
+                    <p class="pokemon-id-back">#020</p>
+                    <div class="pokemon-image">
+                        <img src="https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/20.png" alt="Bulbasaur">
+                    </div>
+                    <div class="pokemon-info">
+                        <div class="name-container">
+                            <p class="pokemon-id">020</p>
+                            <h1 class="pokemon-name">Raticate</h1>
+                        </div>
+                        <div class="pokemon-type">
+                            <p class="type normal ">normal</p>
+                           
+                        </div>
+                        <div class="pokemon-stats">
+                            <p class="height">2`04"</p>
+                            <p class="weight">40.8 Ibs</p>
+                        </div>
+                        <button class="btn btn-caught" onclick="catchPokemon()">Caught</button>
+                        
+                    </div>              
+                </div>
+
+            </div>
+       
+            <button id="load-more-btn">Load More Pokémon</button>
+            <div id="pokemon-container">
+                
+            </div>
+
+        
+    </main>
     <script src="script.js"></script>
+	
 </body>
 </html>

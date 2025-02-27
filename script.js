@@ -1,164 +1,172 @@
-document.getElementById('fetch-button').addEventListener('click', fetchPokemon);
-document.getElementById('fetch-type-button').addEventListener('click', fetchPokemonByType);
-document.getElementById('dark-mode-toggle').addEventListener('click', toggleDarkMode);
-document.getElementById('fetch-all-button').addEventListener('click', fetchAllPokemon);
-document.getElementById('filter-button').addEventListener('click', filterPokemon);
-document.getElementById('sort-button').addEventListener('click', sortPokemon);
+const pokemonList = document.getElementById('list-Pokemon');
+const $return = document.getElementById('return');
+let pokemons = []
+let caughtPokemon = JSON.parse(localStorage.getItem('caughtPokemon')) || []
 
-let favorites = [];
-let searchHistory = [];
-let allPokemons = []; // Store all fetched Pokémon for filtering and sorting
-
-async function fetchPokemon() {
-    const input = document.getElementById('pokemon-input').value;
-    const url = `https://pokeapi.co/api/v2/pokemon/${input.toLowerCase()}`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Pokémon not found');
-        }
-        const data = await response.json();
-        displayPokemon(data);
-        addToSearchHistory(input);
-    } catch (error) {
-        console.error(error);
-        document.getElementById('pokemon-data').innerText = error.message;
-    }
+function parseUrl (url) {
+  return url.substring(url.substring(0, url.length - 2).lastIndexOf('/') + 1, url.length - 1)
 }
 
-async function fetchPokemonByType() {
-    const type = document.getElementById('type-select').value;
-    if (!type) {
-        alert('Please select a Pokémon type.');
-        return;
-    }
-
-    const url = `https://pokeapi.co/api/v2/type/${type}`;
-
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Type not found');
-        }
-        const data = await response.json();
-        displayPokemonsByType(data.pokemon);
-    } catch (error) {
-        console.error(error);
-        document.getElementById('pokemon-data').innerText = error.message;
-    }
+async function fetchPokemons() {
+  const response = await fetch('https://pokeapi.co/api/v2/pokemon?limit=20')
+  const data = await response.json()
+  console.log(data.next);
+  document.getElementById("load-more-btn").dataset.url = data.next;
+  pokemons = data.results
+  generatePokemon(pokemons)
 }
 
-async function fetchAllPokemon() {
-    const url = `https://pokeapi.co/api/v2/pokemon?limit=1000`; // Fetching a large number of Pokémon
+// Create Pokemon elements
+async function generatePokemon(pokemons) {
+  pokemonList.innerHTML = '';
+  // for (const type in pokemonTypes) {
+    for (const item of pokemons) {
+      if(!item.id)  {
+        item.id = parseUrl(item.url)
+      }
+      const pokemon = document.createElement('div');
+      pokemon.classList.add('pokemon');
 
-    try {
-        const response = await fetch(url);
-        if (!response.ok) {
-            throw new Error('Failed to fetch Pokémon');
-        }
-        const data = await response.json();
-        allPokemons = data.results; // Store all Pokémon for filtering and sorting
-        displayAllPokemon(allPokemons);
-    } catch (error) {
-        console.error(error);
-        document.getElementById('all-pokemon-images').innerText = error.message;
+      const idBack = document.createElement('p');
+      idBack.classList.add('pokemon-id-back');
+      // idBack.textContent = `#${id.toString().padStart(3, '0')}`;
+      idBack.textContent = `#${item.id}`
+
+      const pokemonData = await fetchPokemonData(item.id);
+
+      const image = document.createElement('div');
+      image.classList.add('pokemon-image');
+      const imageImg = document.createElement('img');
+      imageImg.src = pokemonData.sprites.other['official-artwork'].front_default;
+      image.appendChild(imageImg);
+
+      const info = document.createElement('div');
+      info.classList.add('pokemon-info');
+
+      const nameContainer = document.createElement('div');
+      nameContainer.classList.add('name-container');
+
+      const idFront = document.createElement('p');
+      idFront.classList.add('pokemon-id');
+      idFront.textContent = item.id;
+
+      const name = document.createElement('h1');
+      name.classList.add('pokemon-name');
+      name.textContent = pokemonData.name;
+
+      nameContainer.appendChild(idFront);
+      nameContainer.appendChild(name);
+
+      const typeDiv = document.createElement('div');
+      typeDiv.classList.add('pokemon-type');
+
+      pokemonData.types.forEach(type => {
+        const typeElement = document.createElement('p');
+        typeElement.classList.add('type', type.type.name);
+        typeElement.textContent = type.type.name;
+        typeDiv.appendChild(typeElement);
+      });
+
+      const stats = document.createElement('div');
+      stats.classList.add('pokemon-stats');
+
+      const height = document.createElement('p');
+      height.classList.add('height');
+      height.textContent = `${pokemonData.height * 10} cm`;
+
+      const weight = document.createElement('p');
+      weight.classList.add('weight');
+      weight.textContent = `${pokemonData.weight / 10} kg`;
+
+      stats.appendChild(height);
+      stats.appendChild(weight);
+
+      const caughtButton = document.createElement('button');
+      caughtButton.classList.add('btn', 'btn-caught');
+      caughtButton.textContent = 'Catch';
+
+    if (caughtPokemon.some(pokemon => pokemon.id === item.id)) {
+        caughtButton.textContent = 'Caught';
     }
+
+      info.appendChild(nameContainer);
+      info.appendChild(typeDiv);
+      info.appendChild(stats);
+      info.appendChild(caughtButton);
+
+      pokemon.appendChild(idBack);
+      pokemon.appendChild(image);
+      pokemon.appendChild(info);
+      pokemonList.appendChild(pokemon);
+    }
+  // } close for...in loop
 }
 
-function filterPokemon() {
-    const ability = document.getElementById('ability-select').value;
-    if (!ability) {
-        alert('Please select an ability to filter.');
-        return;
-    }
+// Fetch Pokemon data from PokeAPI
+async function fetchPokemonData(id) {
+  const url = `https://pokeapi.co/api/v2/pokemon/${id}`;
+  const response = await fetch(url);
+  const data = await response.json();
+  return data;
+}
 
-    // Fetch Pokémon with the selected ability
-    const filteredPokemons = allPokemons.filter(pokemon => {
-        // Logic to check if the Pokémon has the selected ability
-        // This requires additional API calls to get abilities for each Pokémon
-        return true; // Placeholder for actual filtering logic
+function catchPokemon(event) {
+  event.preventDefault();
+
+  const pokemonContainer = event.target.closest('.pokemon');
+  const pokemonId = pokemonContainer.querySelector('.pokemon-id').textContent;
+  const pokemonName = pokemonContainer.querySelector('.pokemon-name').textContent;
+
+  if (!caughtPokemon.some(pokemon => pokemon.id === pokemonId)) {
+    caughtPokemon.push({ id: pokemonId, name: pokemonName });
+    localStorage.setItem('caughtPokemon', JSON.stringify(caughtPokemon));
+    generatePokemon(caughtPokemon)
+    alert(`${pokemonName} has been caught!`);
+  } else {
+    alert(`${pokemonName} is already caught!`);
+  }
+}
+
+pokemonList.addEventListener('click', function(event) {
+  if (event.target.classList.contains('btn-caught')) {
+    catchPokemon(event);
+  }
+});
+
+$return.addEventListener('click', function() {
+  fetchPokemons()
+})
+
+fetchPokemons()
+
+
+document.getElementById("load-more-btn").addEventListener("click", async function(e) {
+  try {
+    const url=e.target.dataset.url 
+      const response = await fetch(url);
+      const data = await response.json();
+      //displayPokemon(data.results);
+      document.getElementById("load-more-btn").dataset.url = data.next;
+      generatePokemon(data.results) 
+  } catch (error) {
+      console.error("Error fetching Pokémon:", error);
+  }
+});
+
+function displayPokemon(pokemonArray) {
+  const container = document.getElementById("pokemon-container");
+  pokemonArray.forEach(pokemon => {
+      container.innerHTML += `<p>${pokemon.name}</p>`;
+  });
+}
+// Get all buttons
+const buttons = document.querySelectorAll('.btn');
+
+// Loop through each button and add click event listener
+buttons.forEach(button => {
+    button.addEventListener('click', () => {
+        // You can handle the click event here
+        console.log('Button clicked: ' + button.id);
+        // You can add more functionality here, like navigating to another page or executing a function
     });
-
-    displayAllPokemon(filteredPokemons);
-}
-
-function sortPokemon() {
-    const sortBy = document.getElementById('sort-select').value;
-    let sortedPokemons;
-
-    if (sortBy === 'name') {
-        sortedPokemons = [...allPokemons].sort((a, b) => a.name.localeCompare(b.name));
-    } else if (sortBy === 'height') {
-        sortedPokemons = [...allPokemons].sort((a, b) => a.height - b.height);
-    } else if (sortBy === 'weight') {
-        sortedPokemons = [...allPokemons].sort((a, b) => a.weight - b.weight);
-    }
-
-    displayAllPokemon(sortedPokemons);
-}
-
-function displayPokemon(data) {
-    const pokemonDataDiv = document.getElementById('pokemon-data');
-    pokemonDataDiv.innerHTML = `
-        <h2>${data.name}</h2>
-        <img src="${data.sprites.front_default}" alt="${data.name}">
-        <p>Height: ${data.height}</p>
-        <p>Weight: ${data.weight}</p>
-        <button onclick="addToFavorites('${data.name}')">Add to Favorites</button>
-    `;
-}
-
-function displayPokemonsByType(pokemons) {
-    const pokemonDataDiv = document.getElementById('pokemon-data');
-    pokemonDataDiv.innerHTML = '<h2>Pokémon of Selected Type:</h2>';
-    pokemons.forEach(pokemon => {
-        pokemonDataDiv.innerHTML += `<p>${pokemon.pokemon.name}</p>`;
-    });
-}
-
-function displayAllPokemon(pokemons) {
-    const allPokemonImagesDiv = document.getElementById('all-pokemon-images');
-    allPokemonImagesDiv.innerHTML = '<h2>All Pokémon:</h2>';
-    pokemons.forEach(pokemon => {
-        const pokemonId = pokemon.url.split('/')[6]; // Extracting Pokémon ID from the URL
-        const imageUrl = `https://pokeapi.co/media/sprites/pokemon/${pokemonId}.png`; // Constructing the image URL
-        allPokemonImagesDiv.innerHTML += `<img src="${imageUrl}" alt="${pokemon.name}" style="width: 100px; height: 100px; margin: 5px; display: inline-block;">`;
-    });
-}
-
-function addToFavorites(pokemonName) {
-    if (!favorites.includes(pokemonName)) {
-        favorites.push(pokemonName);
-        updateFavoritesDisplay();
-    } else {
-        alert(`${pokemonName} is already in your favorites.`);
-    }
-}
-
-function updateFavoritesDisplay() {
-    const favoritesDiv = document.getElementById('favorites');
-    favoritesDiv.innerHTML = '<h2>Your Favorites:</h2>';
-    favorites.forEach(favorite => {
-        favoritesDiv.innerHTML += `<p>${favorite}</p>`;
-    });
-}
-
-function addToSearchHistory(searchTerm) {
-    if (!searchHistory.includes(searchTerm)) {
-        searchHistory.push(searchTerm);
-        updateSearchHistoryDisplay();
-    }
-}
-
-function updateSearchHistoryDisplay() {
-    const searchHistoryDiv = document.getElementById('search-history');
-    searchHistoryDiv.innerHTML = '<h2>Search History:</h2>';
-    searchHistory.forEach(term => {
-        searchHistoryDiv.innerHTML += `<p>${term}</p>`;
-    });
-}
-
-function toggleDarkMode() {
-    document.body.classList.toggle('dark-mode');
-}
+});
