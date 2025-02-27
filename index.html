@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pokémon API</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <h1>Welcome to the Pokémon API</h1>
+    <div>
+        <input type="text" id="pokemon-input" placeholder="Enter Pokémon name">
+        <button id="fetch-button">Fetch Pokémon</button>
+    </div>
+    <div>
+        <label for="type-select">Select Pokémon Type:</label>
+        <select id="type-select">
+            <option value="">--Select Type--</option>
+            <option value="fire">Fire</option>
+            <option value="water">Water</option>
+            <option value="grass">Grass</option>
+            <!-- Add more types as needed -->
+        </select>
+        <button id="fetch-type-button">Fetch by Type</button>
+    </div>
+    <div>
+        <label for="ability-select">Filter by Ability:</label>
+        <select id="ability-select">
+            <option value="">--Select Ability--</option>
+            <!-- Add abilities dynamically -->
+        </select>
+        <button id="filter-button">Filter Pokémon</button>
+    </div>
+    <div>
+        <label for="sort-select">Sort by:</label>
+        <select id="sort-select">
+            <option value="name">Name</option>
+            <option value="height">Height</option>
+            <option value="weight">Weight</option>
+        </select>
+        <button id="sort-button">Sort Pokémon</button>
+    </div>
+    <div id="pokemon-data"></div>
+    <div id="favorites"></div>
+    <div id="search-history"></div>
+    <button id="dark-mode-toggle">Toggle Dark Mode</button>
+    <button id="fetch-all-button">Fetch All Pokémon</button>
+    <div id="all-pokemon-images"></div>
+    <script src="script.js"></script>
+</body>
+</html>
